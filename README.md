@@ -1,6 +1,14 @@
 # minatar-cpp
 
-Simply provides a C++ interface to MinAtar environments (https://github.com/kenjyoung/MinAtar/)
+Simply provides a C++ interface to MinAtar environments
+(https://github.com/kenjyoung/MinAtar/)
+
+To compile MinAtarInterface.o, be sure to use `python3-config
+--includes` for the Python include flags.
+
+When linking, be sure use both `python3-config --includes` for the Python
+include flags and `python3-config --embed --ldflags` for the Python
+library flags.
 
 ## Citing MinAtar
 If you use MinAtar in your research please cite the following:
