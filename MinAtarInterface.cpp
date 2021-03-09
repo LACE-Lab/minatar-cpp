@@ -1,13 +1,11 @@
 #include "MinAtarInterface.hpp"
 #include <iostream>
 
-
-// Default path
-#define MINATAR_PATH_ "MinAtar/"
-
 // Compile with -DMINATAR_PATH=\"<path>\" to change the path
 #ifdef MINATAR_PATH
 #define MINATAR_PATH_ MINATAR_PATH
+#else
+#define MINATAR_PATH_ "MinAtar/" // Default path
 #endif
 
 using namespace std;
@@ -21,8 +19,10 @@ MinAtarInterface::MinAtarInterface(string gameName,
    initPy_{initPy},
    finalizePy_{finalizePy},
    gameName_{gameName}
-{   
+{
+   cerr << "---MinAtar-CPP---" << endl;
    if (initPy_) {
+      cerr << "Initializing Python" << endl;
       Py_Initialize();
    }
    // Add the MinAtar path to the module search path
@@ -35,15 +35,24 @@ MinAtarInterface::MinAtarInterface(string gameName,
 
    // Import the environment module
    CPyObject envName = PyUnicode_FromString("minatar.environment");
+   cerr << "Importing MinAtar environment module" << endl;
    CPyObject envMod = PyImport_Import(envName);
    if (!envMod.is()) {
-      cerr << "Could not import the MinAtar environment  module." << endl;
+      cerr << "Could not import the MinAtar environment module." << endl;
       cerr << "Tried to import minatar.environment from path " << MINATAR_PATH_ << endl;
       cerr << "To change the path, compile with -DMINATAR_PATH=\"<path>\"" << endl;
       exit(1);
    }
 
    // Initialize the environment object
+   cerr << "Creating MinAtar Environment: " << gameName << endl;
+   cerr << "The given seed is: ";
+   if (randomSeed == 0) {
+      cerr << "Default Seed";
+   } else {
+      cerr << randomSeed;
+   }
+   cerr << endl;
    CPyObject envClass = PyObject_GetAttrString(envMod, "Environment");
    CPyObject pySeed = (randomSeed == 0 ? Py_None : PyLong_FromLong(randomSeed));
    CPyObject args = Py_BuildValue("(sfOO)",
@@ -78,12 +87,16 @@ MinAtarInterface::MinAtarInterface(string gameName,
 	 curState_[i][j].resize(numChannels_);
       }
    }
+
+   cerr << "Initializing the environment state" << endl;
    updateState();
+   cerr << "---" << endl;
 }
 
 MinAtarInterface::~MinAtarInterface() {
    env_.release();
    if (finalizePy_) {
+      cerr << "---MinAtar-CPP: Finalizing Python---" << endl;
       Py_Finalize();
    }
 }
@@ -116,7 +129,7 @@ void MinAtarInterface::act(unsigned long a, float& reward, bool& isGameOver)
    updateState();
 }
 
-const vector<vector<vector<size_t> > > MinAtarInterface::state() const {
+const vector<vector<vector<size_t> > >& MinAtarInterface::state() const {
    return curState_;
 }
 

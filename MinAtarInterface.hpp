@@ -31,7 +31,7 @@ class MinAtarInterface {
 
    void reset();
    void act(unsigned long a, float& reward, bool& isGameOver);
-   const std::vector<std::vector<std::vector<size_t> > > state() const;
+   const std::vector<std::vector<std::vector<size_t> > >& state() const;
 
    std::tuple<size_t, size_t, size_t> state_shape() const;
    std::string game_name() const;
