@@ -20,6 +20,15 @@ MinAtarInterface::MinAtarInterface(string gameName,
    finalizePy_{finalizePy},
    gameName_{gameName}
 {
+   if (gameName != "asterix" and
+       gameName != "breakout" and
+       gameName != "freeway" and
+       gameName != "seaquest" and
+       gameName != "space_invaders") {
+      cerr << "No game with name " << gameName << " found." << endl;
+      cerr << "Supported games are: asterix, breakout, freeway, seaquest, space_invaders" << endl;
+   }
+   
    cerr << "---MinAtar-CPP---" << endl;
    if (initPy_) {
       cerr << "Initializing Python" << endl;
@@ -64,11 +73,11 @@ MinAtarInterface::MinAtarInterface(string gameName,
 
    // Get the shape 
    CPyObject shape = PyObject_CallMethod(env_, "state_shape", nullptr);
-   PyObject* pyNumRows = PyList_GetItem(shape, 0);   
+   PyObject* pyNumRows = PyList_GetItem(shape, 0);
    numRows_ = PyLong_AsLong(pyNumRows);
-   PyObject* pyNumCols = PyList_GetItem(shape, 0);   
+   PyObject* pyNumCols = PyList_GetItem(shape, 0);
    numCols_ = PyLong_AsLong(pyNumCols);
-   PyObject* pyNumChannels = PyList_GetItem(shape, 2);   
+   PyObject* pyNumChannels = PyList_GetItem(shape, 2);
    numChannels_ = PyLong_AsLong(pyNumChannels);
 
    //Get the minimal action set
