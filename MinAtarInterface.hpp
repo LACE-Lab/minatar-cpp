@@ -26,6 +26,12 @@ class MinAtarInterface {
    void updateState();
    
   public:
+   class State {
+      std::string stateStr_;
+      State(std::string stateStr) : stateStr_{stateStr} {}
+      friend class MinAtarInterface;
+   };  
+   
    MinAtarInterface(std::string gameName, float stickyAction=0.1, bool difficultyRamping=true, size_t randomSeed=0, bool initPy=true, bool finalizePy=true);
    ~MinAtarInterface();
 
@@ -40,6 +46,9 @@ class MinAtarInterface {
 
    void display_state(unsigned long time=50);
    void close_display();
+
+   State saveState();
+   void loadState(const State& state);
 };
 
 #endif

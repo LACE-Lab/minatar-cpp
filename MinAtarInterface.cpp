@@ -165,3 +165,14 @@ void MinAtarInterface::display_state(unsigned long time) {
 void MinAtarInterface::close_display() {
    PyObject_CallMethod(env_, "close_display", nullptr);
 }
+
+MinAtarInterface::State MinAtarInterface::saveState() {
+   CPyObject pyStr = PyObject_CallMethod(env_, "save_state", nullptr);
+   CPyObject pyBytes = PyUnicode_AsEncodedString(pyStr.getObject(), "UTF-8", "strict");
+   string stateStr(PyBytes_AsString(pyBytes));
+   return {stateStr};
+}
+
+void MinAtarInterface::loadState(const State& state) {
+   PyObject_CallMethod(env_, "load_state", "(s)", state.stateStr_.c_str());
+}
