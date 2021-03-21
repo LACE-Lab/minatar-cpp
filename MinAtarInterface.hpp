@@ -22,6 +22,7 @@ class MinAtarInterface {
    size_t numChannels_;
    std::vector<size_t> minActionSet_;
    std::vector<std::vector<std::vector<size_t> > > curState_;
+   std::vector<std::vector<std::tuple<float, float> > > curContinuousState_;
 
    void updateState();
    
@@ -38,6 +39,7 @@ class MinAtarInterface {
    void reset();
    void act(unsigned long a, float& reward, bool& isGameOver);
    const std::vector<std::vector<std::vector<size_t> > >& state() const;
+   const std::vector<std::vector<std::tuple<float, float> > >& continuous_state() const;
 
    std::tuple<size_t, size_t, size_t> state_shape() const;
    std::string game_name() const;

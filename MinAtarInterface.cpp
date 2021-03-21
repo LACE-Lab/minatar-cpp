@@ -96,6 +96,7 @@ MinAtarInterface::MinAtarInterface(string gameName,
 	 curState_[i][j].resize(numChannels_);
       }
    }
+   curContinuousState_.resize(numChannels_);
 
    cerr << "Initializing the environment state" << endl;
    updateState();
@@ -121,6 +122,21 @@ void MinAtarInterface::updateState() {
 	 }
       }
    }
+
+   CPyObject pyCState = PyObject_CallMethod(env_, "continuous_state", nullptr);
+   for (Py_ssize_t i = 0; i < numChannels_; ++i) {
+      curContinuousState_[i].clear();
+      PyObject* objList = PyList_GetItem(pyCState, i);
+      for (Py_ssize_t j = 0; j < PyList_Size(objList); ++j) {
+	 PyObject* posTuple = PyList_GetItem(objList, j);
+	 PyObject* pyX = PyTuple_GetItem(posTuple, 0);
+	 float x = PyFloat_AsDouble(pyX);
+	 PyObject* pyY = PyTuple_GetItem(posTuple, 1);
+	 float y = PyFloat_AsDouble(pyY);
+	 
+	 curContinuousState_[i].push_back({x, y});
+      }
+   }
 }
 
 void MinAtarInterface::reset() {
@@ -140,6 +156,10 @@ void MinAtarInterface::act(unsigned long a, float& reward, bool& isGameOver)
 
 const vector<vector<vector<size_t> > >& MinAtarInterface::state() const {
    return curState_;
+}
+
+const vector<vector<tuple<float, float> > >& MinAtarInterface::continuous_state() const {
+   return curContinuousState_;
 }
 
 tuple<size_t, size_t, size_t> MinAtarInterface::state_shape() const {
