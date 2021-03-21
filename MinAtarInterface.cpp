@@ -130,9 +130,9 @@ void MinAtarInterface::updateState() {
       for (Py_ssize_t j = 0; j < PyList_Size(objList); ++j) {
 	 PyObject* posTuple = PyList_GetItem(objList, j);
 	 PyObject* pyX = PyTuple_GetItem(posTuple, 0);
-	 float x = PyFloat_AsDouble(pyX);
+	 double x = PyFloat_AsDouble(pyX);
 	 PyObject* pyY = PyTuple_GetItem(posTuple, 1);
-	 float y = PyFloat_AsDouble(pyY);
+	 double y = PyFloat_AsDouble(pyY);
 	 
 	 curContinuousState_[i].push_back({x, y});
       }
@@ -158,7 +158,7 @@ const vector<vector<vector<size_t> > >& MinAtarInterface::state() const {
    return curState_;
 }
 
-const vector<vector<tuple<float, float> > >& MinAtarInterface::continuous_state() const {
+const vector<vector<tuple<double, double> > >& MinAtarInterface::continuous_state() const {
    return curContinuousState_;
 }
 
