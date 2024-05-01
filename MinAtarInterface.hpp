@@ -17,11 +17,11 @@ class MinAtarInterface {
    CPyObject env_;
    
    std::string gameName_;
-   size_t numRows_;
-   size_t numCols_;
-   size_t numChannels_;
-   std::vector<size_t> minActionSet_;
-   std::vector<std::vector<std::vector<size_t> > > curState_;
+   std::size_t numRows_;
+   std::size_t numCols_;
+   std::size_t numChannels_;
+   std::vector<std::size_t> minActionSet_;
+   std::vector<std::vector<std::vector<std::size_t> > > curState_;
    std::vector<std::vector<std::tuple<double, double> > > curContinuousState_;
 
    void updateState();
@@ -33,18 +33,18 @@ class MinAtarInterface {
       friend class MinAtarInterface;
    };  
    
-   MinAtarInterface(std::string gameName, float stickyAction=0.1, bool difficultyRamping=true, size_t randomSeed=0, bool initPy=true, bool finalizePy=true);
+   MinAtarInterface(std::string gameName, float stickyAction=0.1, bool difficultyRamping=true, std::size_t randomSeed=0, bool initPy=true, bool finalizePy=true);
    ~MinAtarInterface();
 
    void reset();
    void act(unsigned long a, float& reward, bool& isGameOver);
-   const std::vector<std::vector<std::vector<size_t> > >& state() const;
+   const std::vector<std::vector<std::vector<std::size_t> > >& state() const;
    const std::vector<std::vector<std::tuple<double, double> > >& continuous_state() const;
 
-   std::tuple<size_t, size_t, size_t> state_shape() const;
+   std::tuple<std::size_t, std::size_t, std::size_t> state_shape() const;
    std::string game_name() const;
-   size_t num_actions() const;
-   const std::vector<size_t>& minimal_action_set() const;
+   std::size_t num_actions() const;
+   const std::vector<std::size_t>& minimal_action_set() const;
 
    void display_state(unsigned long time=50);
    void close_display();

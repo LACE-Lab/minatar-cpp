@@ -113,9 +113,9 @@ MinAtarInterface::~MinAtarInterface() {
 
 void MinAtarInterface::updateState() {
    CPyObject pyState = PyObject_CallMethod(env_, "state", nullptr);
-   for (Py_ssize_t i = 0; i < numRows_; ++i) {
-      for (Py_ssize_t j = 0; j < numCols_; ++j) {
-	 for (Py_ssize_t k = 0; k < numChannels_; ++k) {
+   for (Py_ssize_t i = 0; i < Py_ssize_t(numRows_); ++i) {
+      for (Py_ssize_t j = 0; j < Py_ssize_t(numCols_); ++j) {
+	 for (Py_ssize_t k = 0; k < Py_ssize_t(numChannels_); ++k) {
 	    CPyObject indexTuple = Py_BuildValue("(nnn)", i, j, k);
 	    CPyObject pyEntry = PyObject_CallMethod(pyState, "item", "(O)", indexTuple.getObject());
 	    curState_[i][j][k] = PyLong_AsLong(pyEntry);
@@ -124,7 +124,7 @@ void MinAtarInterface::updateState() {
    }
 
    CPyObject pyCState = PyObject_CallMethod(env_, "continuous_state", nullptr);
-   for (Py_ssize_t i = 0; i < numChannels_; ++i) {
+   for (Py_ssize_t i = 0; i < Py_ssize_t(numChannels_); ++i) {
       curContinuousState_[i].clear();
       PyObject* objList = PyList_GetItem(pyCState, i);
       for (Py_ssize_t j = 0; j < PyList_Size(objList); ++j) {
