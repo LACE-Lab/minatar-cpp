@@ -10,7 +10,7 @@ find_package(PythonLibs 3 REQUIRED)
 
 add_library(minatar-cpp MinAtarInterface.cpp)
 
-include_directories(${PYTHON_INCLUDE_DIRS})
+target_include_directories(minatar-cpp PRIVATE ${PYTHON_INCLUDE_DIRS})
 target_link_libraries(minatar-cpp ${PYTHON_LIBRARIES})
 
 
