@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.18 FATAL_ERROR)
 project(MinAtarCPP)
 
 set(CMAKE_CXX_FLAGS "-std=c++17 -O3 -g -pedantic -Wall -Wextra")
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib)
 
 find_package(PythonLibs 3 REQUIRED)
 
