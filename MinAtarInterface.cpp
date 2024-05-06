@@ -37,6 +37,12 @@ MinAtarInterface::MinAtarInterface(string gameName,
    // Add the MinAtar path to the module search path
    CPyObject sysName = PyUnicode_FromString("sys");
    CPyObject sysMod = PyImport_Import(sysName);
+
+   CPyObject version = PyObject_GetAttrString(sysMod, "version");
+   CPyObject versionBytes = PyUnicode_AsEncodedString(version.getObject(), "UTF-8", "strict");
+   string versionStr(PyBytes_AsString(versionBytes));
+   cerr << "Python version: " << versionStr << endl;
+   
    CPyObject sysPath = PyObject_GetAttrString(sysMod, "path");
    CPyObject sysPathAppend = PyObject_GetAttrString(sysPath, "append");
    CPyObject sysPathAppendArgs = Py_BuildValue("(s)", MINATAR_PATH_);
@@ -50,6 +56,7 @@ MinAtarInterface::MinAtarInterface(string gameName,
       cerr << "Could not import the MinAtar environment module." << endl;
       cerr << "Tried to import minatar.environment from path " << MINATAR_PATH_ << endl;
       cerr << "To change the path, compile with -DMINATAR_PATH=\"<path>\"" << endl;
+      PyErr_Print();
       exit(1);
    }
 
